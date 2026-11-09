@@ -3,7 +3,7 @@ const { PrismaPg } = require("@prisma/adapter-pg")
 const { config } = require("dotenv")
 const path = require('path')
 
-config();
+config({path: path.join(__dirname,'..','..','.env')});
 
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL

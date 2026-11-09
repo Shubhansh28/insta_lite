@@ -1,15 +1,19 @@
-const {prisma} = require('./database/prismaConfig')
-async function testConnection() {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
+const express = require("express")
+const userRouter = require("./routes/users.routes")
+const postRouter = require("./routes/posts.routes")
 
-    console.log("✅ Database connection successful");
-  } catch (error) {
-    console.error("❌ Database connection failed");
-    console.error(error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+const app = express()
+const port = 3000
 
-testConnection();
+app.use(express.json())
+
+app.get("/health", (req,res) => {
+    res.status(200).json({ status: "OK" })
+})
+
+app.use("/users", userRouter)
+app.use("/posts", postRouter)
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
